@@ -2,6 +2,11 @@ import numpy as np
 import cv2 as cv
 import time
 
+def concat_vh(list_2d):
+
+    return cv.vconcat([cv.hconcat(list_h)
+                        for list_h in list_2d])
+
 
 while cv.waitKey() != ord('q'):
 
@@ -32,6 +37,10 @@ while cv.waitKey() != ord('q'):
         cv.imwrite("pic3.jpg", img3)
         cv.imwrite("pic4.jpg", img4)
 
+        img_tile = concat_vh([[img1, img2],
+                              [img3, img4]])
+
+        cv.imshow('panorama.jpg', img_tile)
         cap.release()
 
 
