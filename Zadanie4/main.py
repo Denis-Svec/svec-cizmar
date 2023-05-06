@@ -14,6 +14,7 @@ def display_inlier_outlier(cloud, ind):
     o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
 
+
 pcd = o3d.io.read_point_cloud('output.pcd')
 #out = np.asarray(pcd.points)
 
@@ -24,17 +25,13 @@ pcd = o3d.io.read_point_cloud('output.pcd')
 #o3d.visualization.draw_geometries([pcd2])
 
 pcd = pcd.voxel_down_sample(voxel_size=0.02)
-cl, ind = pcd.remove_radius_outlier(nb_points=16, radius=0.05)
+cl, ind = pcd.remove_radius_outlier(nb_points=16, radius=0.08)
+
 display_inlier_outlier(pcd, ind)
+pcd = pcd.select_by_index(ind)
+o3d.visualization.draw_geometries([pcd])
 plane_model, inliers = pcd.segment_plane(distance_threshold=0.15, ransac_n=3, num_iterations=1000)
 
-
-
-inlier_cloud = pcd.select_by_index(inliers)
-outlier_cloud = pcd.select_by_index(inliers, invert=True)
-
-inlier_cloud.paint_uniform_color([1, 0, 0])
-outlier_cloud.paint_uniform_color([0.6, 0.6, 0.6])
 
 # o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
